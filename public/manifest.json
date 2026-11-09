@@ -1,0 +1,29 @@
+{
+  "name": "Warung Nasi Barokah — Menu Hari Ini",
+  "short_name": "Menu Warung",
+  "description": "Cek menu terbaru dan ketersediaan menu Warung Nasi Barokah. Update realtime!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF6EC",
+  "theme_color": "#2A4B3A",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
