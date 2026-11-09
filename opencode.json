@@ -1,0 +1,42 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "cosmoshub/glm-5.3-flashx",
+  "small_model": "cosmoshub/glm-5.3-flashx",
+  "provider": {
+    "cosmoshub": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "CosmosHub",
+      "options": {
+        "baseURL": "https://api.cosmoshub.tech/v1",
+        "apiKey": "{file:.opencode/provider-api-key}"
+      },
+      "models": {
+        "glm-5.3-flashx": {
+          "name": "GLM 5.3 FlashX",
+          "reasoning": true,
+          "temperature": true,
+          "tool_call": true,
+          "interleaved": {
+            "field": "reasoning_content"
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "limit": {
+            "context": 1048576,
+            "output": 131072
+          },
+          "options": {
+            "temperature": 0.2,
+            "reasoningEffort": "high"
+          }
+        }
+      }
+    }
+  }
+}
