@@ -189,8 +189,15 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
                 )}
               </div>
 
-              {/* Info */}
-              <div className="min-w-0 flex-1">
+              {/* Info — bisa diklik untuk buka form edit */}
+              <div
+                className="min-w-0 flex-1 cursor-pointer"
+                onClick={() => {
+                  setMenuEdit(menu);
+                  setFormOpen(true);
+                }}
+                title="Klik untuk edit menu"
+              >
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="truncate font-bold text-warung-hijau-tua">
                     {menu.nama}
@@ -207,6 +214,12 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
                 {menu.deskripsi && (
                   <p className="mt-0.5 hidden truncate text-xs text-stone-500 sm:block">
                     {menu.deskripsi}
+                  </p>
+                )}
+                {/* Hint deskripsi di mobile — deskripsi full ada di form edit */}
+                {menu.deskripsi && (
+                  <p className="mt-0.5 text-xs text-stone-400 italic sm:hidden">
+                    Deskripsi tersedia — ketuk untuk lihat/edit
                   </p>
                 )}
               </div>
