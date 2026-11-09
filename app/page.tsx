@@ -78,7 +78,7 @@ export default function Home() {
           />
           <div className="min-w-0 flex-1">
             <h1 className="truncate text-lg font-extrabold text-warung-hijau-tua sm:text-xl">
-              Warung Solo Pak Umar
+              Warung Nasi Solo Pak Umar
             </h1>
             <p className="flex items-center gap-1.5 text-xs text-stone-500 sm:text-sm">
               <span className="relative flex h-2 w-2">
@@ -119,7 +119,7 @@ export default function Home() {
               🍛 Masakan rumahan
             </span>
             <span className="rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-medium ring-1 ring-warung-emas/30 backdrop-blur-sm sm:text-sm">
-              💰 Harga mulai Rp 5rb
+              💰 Harga mulai Rp 10rb
             </span>
             <span className="rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-medium ring-1 ring-warung-emas/30 backdrop-blur-sm sm:text-sm">
               ⭐ Menu Beragam
