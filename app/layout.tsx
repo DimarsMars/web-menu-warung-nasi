@@ -8,8 +8,8 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 // URL website untuk Open Graph — fallback aman jika env kosong/belum diset
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000";
+// Hanya dipakai di server (build time), jadi tanpa prefix NEXT_PUBLIC_
+const SITE_URL = process.env.SITE_URL?.trim() || "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
