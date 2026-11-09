@@ -38,10 +38,11 @@ export default async function proxy(request: NextRequest) {
   const isLoggedIn = Boolean(data?.claims);
   const isLoginPage = pathname === "/admin/login";
 
-  // Belum login & bukan di halaman login → lempar ke login
+  // Belum login & buka /admin → lempar ke halaman utama (menu)
+  // (bukan ke halaman login — supaya tombol "kembali" pelanggan tidak nyangkut)
   if (!isLoggedIn && !isLoginPage) {
     const url = request.nextUrl.clone();
-    url.pathname = "/admin/login";
+    url.pathname = "/";
     return NextResponse.redirect(url);
   }
 

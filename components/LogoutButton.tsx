@@ -12,8 +12,8 @@ export default function LogoutButton() {
     setLoading(true);
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.refresh();
-    router.push("/admin/login");
+    // replace agar halaman admin tidak tertinggal di history browser
+    router.replace("/admin/login");
   }
 
   return (

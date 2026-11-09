@@ -34,9 +34,10 @@ export default function LoginPage() {
       return;
     }
 
-    // Sukses — refresh agar middleware membaca session baru, lalu masuk dashboard
+    // Sukses — replace agar halaman login tidak tertinggal di history,
+    // jadi tombol "kembali" dari dashboard tidak muncul lagi di login
     router.refresh();
-    router.push("/admin");
+    router.replace("/admin");
   }
 
   return (
