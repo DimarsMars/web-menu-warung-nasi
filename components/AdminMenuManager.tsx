@@ -12,6 +12,7 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [resetting, setResetting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // State modal form
@@ -33,6 +34,32 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
   }, [menus, kategoriAktif]);
 
   const jumlahReady = menus.filter((m) => m.is_ready).length;
+
+  // Reset semua status menu jadi HABIS (untuk persiapan besok)
+  async function handleResetSemua() {
+    const konfirmasi = window.confirm(
+      `Reset SEMUA status menu jadi HABIS?\n\n${jumlahReady} menu yang sedang ready akan ditandai habis.\n\nBiasanya dilakukan saat warung sudah tutup.`
+    );
+    if (!konfirmasi) return;
+
+    setResetting(true);
+    setError(null);
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("menus")
+      .update({ is_ready: false })
+      .eq("is_ready", true);
+
+    if (error) {
+      setError(`Gagal reset status: ${error.message}`);
+      setResetting(false);
+      return;
+    }
+
+    await refreshMenus();
+    startTransition(() => router.refresh());
+    setResetting(false);
+  }
 
   // Toggle status ready / habis
   async function handleToggle(menu: Menu) {
@@ -109,10 +136,23 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
           <p className="text-xs text-stone-500 sm:text-sm">Ready</p>
         </div>
         <div className="animate-fade-up stagger-2 col-span-2 rounded-2xl bg-white px-5 py-4 shadow-sm ring-1 ring-red-200 sm:col-span-1">
-          <p className="text-2xl font-extrabold text-warung-coklat sm:text-3xl">
-            {menus.length - jumlahReady}
-          </p>
-          <p className="text-xs text-stone-500 sm:text-sm">Habis</p>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <p className="text-2xl font-extrabold text-warung-coklat sm:text-3xl">
+                {menus.length - jumlahReady}
+              </p>
+              <p className="text-xs text-stone-500 sm:text-sm">Habis</p>
+            </div>
+            {/* Tombol reset semua status */}
+            <button
+              onClick={handleResetSemua}
+              disabled={resetting || isPending || jumlahReady === 0}
+              title="Tandai semua menu jadi HABIS (untuk saat warung tutup)"
+              className="shrink-0 rounded-full bg-warung-coklat/10 px-3 py-1.5 text-[11px] font-bold text-warung-coklat ring-1 ring-warung-coklat/30 transition-all duration-300 hover:scale-105 hover:bg-warung-coklat hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100 sm:text-xs"
+            >
+              {resetting ? "⏳..." : "🌙 Reset Tutup"}
+            </button>
+          </div>
         </div>
       </div>
 
