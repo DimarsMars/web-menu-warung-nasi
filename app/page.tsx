@@ -150,7 +150,7 @@ export default function Home() {
       <footer className="border-t border-warung-hijau/10 bg-warung-hijau py-8">
         <div className="mx-auto max-w-6xl px-4 text-center">
           <p className="text-sm font-semibold text-warung-emas">
-            Warung Nasi Barokah
+            Warung Nasi Solo Pak Umar
           </p>
           <p className="mt-1 text-xs text-white/60">
             Terima kasih sudah berkunjung 🙏 · Diperbarui otomatis setiap hari
