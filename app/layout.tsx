@@ -13,12 +13,12 @@ const SITE_URL = process.env.SITE_URL?.trim() || "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Warung Nasi Barokah — Menu Hari Ini",
+  title: "Warung Nasi Solo Pak Umar — Menu Hari Ini",
   description:
-    "Cek menu terbaru dan ketersediaan menu Warung Nasi Barokah. Update realtime!",
+    "Cek menu terbaru dan ketersediaan menu Warung Nasi Solo Pak Umar. Update realtime!",
   // Open Graph — preview cantik saat link di-share ke WhatsApp/social media
   openGraph: {
-    title: "Warung Nasi Barokah — Menu Hari Ini",
+    title: "Warung Nasi Solo Pak Umar — Menu Hari Ini",
     description:
       "Cek menu yang ready hari ini! Update langsung tanpa perlu tanya-tanya.",
     images: ["/og-image.png"],
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   // Twitter card
   twitter: {
     card: "summary_large_image",
-    title: "Warung Nasi Barokah — Menu Hari Ini",
+    title: "Warung Nasi Solo Pak Umar — Menu Hari Ini",
     description: "Cek menu yang ready hari ini!",
     images: ["/og-image.png"],
   },

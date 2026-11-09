@@ -1,7 +1,7 @@
 {
-  "name": "Warung Nasi Barokah — Menu Hari Ini",
+  "name": "Warung Nasi Solo Pak Umar — Menu Hari Ini",
   "short_name": "Menu Warung",
-  "description": "Cek menu terbaru dan ketersediaan menu Warung Nasi Barokah. Update realtime!",
+  "description": "Cek menu terbaru dan ketersediaan menu Warung Nasi Solo Pak Umar. Update realtime!",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAF6EC",

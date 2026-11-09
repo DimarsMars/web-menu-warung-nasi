@@ -56,7 +56,7 @@ function buatSvgOg() {
     <circle cx="600" cy="315" r="150" fill="#F3CE67" opacity="0.15"/>
     <circle cx="600" cy="315" r="132" fill="#FAF6EC"/>
     <text x="600" y="365" font-size="110" text-anchor="middle">🍚</text>
-    <text x="600" y="540" font-size="58" font-weight="800" fill="#FAF6EC" text-anchor="middle" font-family="Arial, sans-serif">Warung Nasi Barokah</text>
+    <text x="600" y="540" font-size="58" font-weight="800" fill="#FAF6EC" text-anchor="middle" font-family="Arial, sans-serif">Warung Nasi Solo Pak Umar</text>
     <text x="600" y="590" font-size="30" font-weight="500" fill="#F3CE67" text-anchor="middle" font-family="Arial, sans-serif">Cek Menu Hari Ini · Update Realtime</text>
   </svg>`;
 }
