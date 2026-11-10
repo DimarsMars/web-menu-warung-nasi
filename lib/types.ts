@@ -6,6 +6,7 @@ export interface Menu {
   kategori: string | null;
   foto_url: string | null;
   is_ready: boolean;
+  auto_reset: boolean; // false = menu selalu ada, tidak ikut reset harian
   created_at: string;
 }
 

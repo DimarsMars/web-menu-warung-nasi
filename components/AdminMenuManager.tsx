@@ -46,21 +46,50 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
   }, [menus, kategoriAktif]);
 
   const jumlahReady = menus.filter((m) => m.is_ready).length;
+  const jumlahAutoReset = menus.filter((m) => m.auto_reset).length;
+
+  // Toggle ikut/tidaknya reset harian untuk satu menu
+  async function handleToggleAutoReset(menu: Menu) {
+    setBusyId(menu.id);
+    setError(null);
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("menus")
+      .update({ auto_reset: !menu.auto_reset })
+      .eq("id", menu.id);
+
+    if (error) {
+      setError(`Gagal mengubah reset harian: ${error.message}`);
+      setBusyId(null);
+      return;
+    }
+
+    await refreshMenus();
+    startTransition(() => router.refresh());
+    setBusyId(null);
+  }
 
   // Reset semua status menu jadi HABIS (untuk persiapan besok)
   async function handleResetSemua() {
     const konfirmasi = window.confirm(
-      `Reset SEMUA status menu jadi HABIS?\n\n${jumlahReady} menu yang sedang ready akan ditandai habis.\n\nBiasanya dilakukan saat warung sudah tutup.`
+      `Reset SEMUA status menu jadi HABIS?\n\n${
+        jumlahReady - (menus.length - jumlahAutoReset) >= 0
+          ? jumlahReady - (menus.length - jumlahAutoReset)
+          : 0
+      } menu biasa yang ready akan ditandai habis (menu 📌 selalu-ready dilewati).\n\nBiasanya dilakukan saat warung sudah tutup.`
     );
     if (!konfirmasi) return;
 
     setResetting(true);
     setError(null);
     const supabase = createClient();
+
+    // Hanya reset menu dengan auto_reset = true (menu 📌 dilewati)
     const { error } = await supabase
       .from("menus")
       .update({ is_ready: false })
-      .eq("is_ready", true);
+      .eq("is_ready", true)
+      .eq("auto_reset", true);
 
     if (error) {
       setError(`Gagal reset status: ${error.message}`);
@@ -278,6 +307,24 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
 
               {/* Aksi */}
               <div className="flex shrink-0 items-center gap-2">
+                {/* Toggle Reset Harian (menu selalu ada / ikut reset) */}
+                <button
+                  onClick={() => handleToggleAutoReset(menu)}
+                  disabled={busyId === menu.id || isPending}
+                  title={
+                    menu.auto_reset
+                      ? "Reset harian: AKTIF — menu ini ikut ditandai habis tiap tengah malam. Klik untuk nonaktifkan (untuk menu yang selalu ada)"
+                      : "Reset harian: NONAKTIF — menu ini selalu READY, tidak ikut reset otomatis. Klik untuk aktifkan"
+                  }
+                  className={`rounded-lg px-2.5 py-2 text-sm font-semibold transition-all duration-200 hover:scale-110 disabled:cursor-wait ${
+                    menu.auto_reset
+                      ? "bg-stone-100 text-stone-500 hover:bg-stone-200"
+                      : "bg-sky-100 text-sky-600 hover:bg-sky-200"
+                  }`}
+                >
+                  {menu.auto_reset ? "🔁" : "📌"}
+                </button>
+
                 {/* Toggle Ready */}
                 <button
                   onClick={() => handleToggle(menu)}

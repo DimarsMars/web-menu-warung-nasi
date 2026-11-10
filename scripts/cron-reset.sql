@@ -16,10 +16,11 @@ GRANT EXECUTE ON FUNCTION cron.schedule TO postgres;
 
 -- 3. Buat jadwal: setiap hari 17:00 UTC = 00:00 WIB
 --    (Ganti ke '0 18 * * *' jika ingin jam 01:00 WIB)
+--    Menu dengan auto_reset = false (📌 selalu-ready) TIDAK ikut direset
 SELECT cron.schedule(
   'reset-menu-tengah-malam',
   '0 17 * * *',
-  $$UPDATE public.menus SET is_ready = false WHERE is_ready = true$$
+  $$UPDATE public.menus SET is_ready = false WHERE is_ready = true AND auto_reset = true$$
 );
 
 -- Cek jadwal yang sudah terdaftar:
