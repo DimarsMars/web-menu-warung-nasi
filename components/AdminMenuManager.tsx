@@ -307,12 +307,12 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
                   )}
                 </div>
 
-                {/* Toggle Ready — tetap di kanan info di semua ukuran */}
+                {/* Toggle Ready (mobile: di kanan info) */}
                 <button
                   onClick={() => handleToggle(menu)}
                   disabled={busyId === menu.id || isPending}
                   title={menu.is_ready ? "Klik untuk tandai habis" : "Klik untuk tandai ready"}
-                  className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 disabled:cursor-wait ${
+                  className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 disabled:cursor-wait sm:hidden ${
                     menu.is_ready ? "bg-emerald-500" : "bg-stone-300"
                   }`}
                 >
@@ -322,6 +322,66 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
                     }`}
                   />
                 </button>
+
+                {/* Aksi ikon (desktop saja) — posisi kanan seperti semula */}
+                <div className="hidden shrink-0 items-center gap-2 sm:flex">
+                  {/* Toggle Reset Harian */}
+                  <button
+                    onClick={() => handleToggleAutoReset(menu)}
+                    disabled={busyId === menu.id || isPending}
+                    title={
+                      menu.auto_reset
+                        ? "Reset harian: AKTIF — menu ini ikut ditandai habis tiap tengah malam. Klik untuk nonaktifkan (untuk menu yang selalu ada)"
+                        : "Reset harian: NONAKTIF — menu ini selalu READY, tidak ikut reset otomatis. Klik untuk aktifkan"
+                    }
+                    className={`rounded-lg px-2.5 py-2 text-sm font-semibold transition-all duration-200 hover:scale-110 disabled:cursor-wait ${
+                      menu.auto_reset
+                        ? "bg-stone-100 text-stone-500 hover:bg-stone-200"
+                        : "bg-sky-100 text-sky-600 hover:bg-sky-200"
+                    }`}
+                  >
+                    {menu.auto_reset ? "🔁" : "📌"}
+                  </button>
+
+                  {/* Toggle Ready */}
+                  <button
+                    onClick={() => handleToggle(menu)}
+                    disabled={busyId === menu.id || isPending}
+                    title={menu.is_ready ? "Klik untuk tandai habis" : "Klik untuk tandai ready"}
+                    className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 disabled:cursor-wait ${
+                      menu.is_ready ? "bg-emerald-500" : "bg-stone-300"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-300 ${
+                        menu.is_ready ? "translate-x-6.5" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+
+                  {/* Edit */}
+                  <button
+                    onClick={() => {
+                      setMenuEdit(menu);
+                      setFormOpen(true);
+                    }}
+                    disabled={busyId === menu.id || isPending}
+                    title="Edit menu"
+                    className="rounded-lg bg-warung-emas/15 px-2.5 py-2 text-sm font-semibold text-warung-hijau-tua transition-all duration-200 hover:scale-110 hover:bg-warung-emas/30"
+                  >
+                    ✏️
+                  </button>
+
+                  {/* Hapus */}
+                  <button
+                    onClick={() => handleDelete(menu)}
+                    disabled={busyId === menu.id || isPending}
+                    title="Hapus menu"
+                    className="rounded-lg bg-red-50 px-2.5 py-2 text-sm font-semibold text-red-600 transition-all duration-200 hover:scale-110 hover:bg-red-100"
+                  >
+                    🗑️
+                  </button>
+                </div>
               </div>
 
               {/* Baris bawah (mobile saja): tombol aksi */}
@@ -356,50 +416,6 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
                   className="flex items-center justify-center gap-1 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 transition-all duration-200 active:scale-95 disabled:cursor-wait"
                 >
                   🗑️ Hapus
-                </button>
-              </div>
-
-              {/* Tombol aksi (desktop saja): ikon di kanan */}
-              <div className="hidden shrink-0 items-center gap-2 sm:flex">
-                {/* Toggle Reset Harian */}
-                <button
-                  onClick={() => handleToggleAutoReset(menu)}
-                  disabled={busyId === menu.id || isPending}
-                  title={
-                    menu.auto_reset
-                      ? "Reset harian: AKTIF — menu ini ikut ditandai habis tiap tengah malam. Klik untuk nonaktifkan (untuk menu yang selalu ada)"
-                      : "Reset harian: NONAKTIF — menu ini selalu READY, tidak ikut reset otomatis. Klik untuk aktifkan"
-                  }
-                  className={`rounded-lg px-2.5 py-2 text-sm font-semibold transition-all duration-200 hover:scale-110 disabled:cursor-wait ${
-                    menu.auto_reset
-                      ? "bg-stone-100 text-stone-500 hover:bg-stone-200"
-                      : "bg-sky-100 text-sky-600 hover:bg-sky-200"
-                  }`}
-                >
-                  {menu.auto_reset ? "🔁" : "📌"}
-                </button>
-
-                {/* Edit */}
-                <button
-                  onClick={() => {
-                    setMenuEdit(menu);
-                    setFormOpen(true);
-                  }}
-                  disabled={busyId === menu.id || isPending}
-                  title="Edit menu"
-                  className="rounded-lg bg-warung-emas/15 px-2.5 py-2 text-sm font-semibold text-warung-hijau-tua transition-all duration-200 hover:scale-110 hover:bg-warung-emas/30"
-                >
-                  ✏️
-                </button>
-
-                {/* Hapus */}
-                <button
-                  onClick={() => handleDelete(menu)}
-                  disabled={busyId === menu.id || isPending}
-                  title="Hapus menu"
-                  className="rounded-lg bg-red-50 px-2.5 py-2 text-sm font-semibold text-red-600 transition-all duration-200 hover:scale-110 hover:bg-red-100"
-                >
-                  🗑️
                 </button>
               </div>
             </div>
