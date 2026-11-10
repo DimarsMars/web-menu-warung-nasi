@@ -54,7 +54,7 @@ export default function MenuList({ menusAwal }: { menusAwal: Menu[] }) {
     return ["Semua", ...Array.from(kategori).sort()];
   }, [menus]);
 
-  // Filter kategori + pencarian
+  // Filter kategori + pencarian + urutan (ready paling atas)
   const menusTampil = useMemo(() => {
     let hasil = menus;
 
@@ -71,7 +71,13 @@ export default function MenuList({ menusAwal }: { menusAwal: Menu[] }) {
       );
     }
 
-    return hasil;
+    // Ready di atas, lalu urut kategori & nama
+    return [...hasil].sort(
+      (a, b) =>
+        Number(b.is_ready) - Number(a.is_ready) ||
+        (a.kategori ?? "").localeCompare(b.kategori ?? "", "id") ||
+        a.nama.localeCompare(b.nama, "id")
+    );
   }, [menus, kategoriAktif, cari]);
 
   // Menu yang tersembunyi karena filter/pencarian tapi masih READY

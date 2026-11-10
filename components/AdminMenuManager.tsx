@@ -29,8 +29,20 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
   }, [menus]);
 
   const menusTampil = useMemo(() => {
-    if (kategoriAktif === "Semua") return menus;
-    return menus.filter((m) => m.kategori === kategoriAktif);
+    let hasil = menus;
+    if (kategoriAktif === "Semua") return [...hasil].sort(
+      (a, b) =>
+        Number(b.is_ready) - Number(a.is_ready) ||
+        (a.kategori ?? "").localeCompare(b.kategori ?? "", "id") ||
+        a.nama.localeCompare(b.nama, "id")
+    );
+    hasil = hasil.filter((m) => m.kategori === kategoriAktif);
+    return [...hasil].sort(
+      (a, b) =>
+        Number(b.is_ready) - Number(a.is_ready) ||
+        (a.kategori ?? "").localeCompare(b.kategori ?? "", "id") ||
+        a.nama.localeCompare(b.nama, "id")
+    );
   }, [menus, kategoriAktif]);
 
   const jumlahReady = menus.filter((m) => m.is_ready).length;
