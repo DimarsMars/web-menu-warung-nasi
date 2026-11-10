@@ -249,65 +249,119 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
           {menusTampil.map((menu, index) => (
             <div
               key={menu.id}
-              className={`animate-fade-up stagger-${(index % 8) + 1} flex items-center gap-3 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-stone-200/70 transition-all duration-300 hover:shadow-md hover:ring-warung-emas/50 sm:gap-4 sm:p-4 ${
+              className={`animate-fade-up stagger-${(index % 8) + 1} rounded-2xl bg-white p-3 shadow-sm ring-1 ring-stone-200/70 transition-all duration-300 hover:shadow-md hover:ring-warung-emas/50 sm:p-4 ${
                 busyId === menu.id || isPending ? "opacity-60" : ""
               }`}
             >
-              {/* Thumbnail */}
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-warung-krem ring-1 ring-stone-200 sm:h-20 sm:w-20">
-                {menu.foto_url ? (
-                  <Image
-                    src={menu.foto_url}
-                    alt={menu.nama}
-                    fill
-                    sizes="80px"
-                    className={`object-cover ${!menu.is_ready && "grayscale"}`}
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-2xl">
-                    🍛
-                  </div>
-                )}
-              </div>
-
-              {/* Info — bisa diklik untuk buka form edit */}
-              <div
-                className="min-w-0 flex-1 cursor-pointer"
-                onClick={() => {
-                  setMenuEdit(menu);
-                  setFormOpen(true);
-                }}
-                title="Klik untuk edit menu"
-              >
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="truncate font-bold text-warung-hijau-tua">
-                    {menu.nama}
-                  </h3>
-                  {menu.kategori && (
-                    <span className="rounded-full bg-warung-emas/20 px-2.5 py-0.5 text-[11px] font-semibold text-warung-hijau-tua">
-                      {menu.kategori}
-                    </span>
+              {/* Baris atas: thumbnail + info */}
+              <div className="flex items-center gap-3 sm:gap-4">
+                {/* Thumbnail */}
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-warung-krem ring-1 ring-stone-200 sm:h-20 sm:w-20">
+                  {menu.foto_url ? (
+                    <Image
+                      src={menu.foto_url}
+                      alt={menu.nama}
+                      fill
+                      sizes="80px"
+                      className={`object-cover ${!menu.is_ready && "grayscale"}`}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-2xl">
+                      🍛
+                    </div>
                   )}
                 </div>
-                <p className="mt-0.5 text-sm font-bold text-warung-coklat">
-                  {formatRupiah(menu.harga)}
-                </p>
-                {menu.deskripsi && (
-                  <p className="mt-0.5 hidden truncate text-xs text-stone-500 sm:block">
-                    {menu.deskripsi}
+
+                {/* Info — bisa diklik untuk buka form edit */}
+                <div
+                  className="min-w-0 flex-1 cursor-pointer"
+                  onClick={() => {
+                    setMenuEdit(menu);
+                    setFormOpen(true);
+                  }}
+                  title="Klik untuk edit menu"
+                >
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="min-w-0 break-words font-bold text-warung-hijau-tua">
+                      {menu.nama}
+                    </h3>
+                    {menu.kategori && (
+                      <span className="shrink-0 rounded-full bg-warung-emas/20 px-2.5 py-0.5 text-[11px] font-semibold text-warung-hijau-tua">
+                        {menu.kategori}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-0.5 text-sm font-bold text-warung-coklat">
+                    {formatRupiah(menu.harga)}
                   </p>
-                )}
-                {/* Hint deskripsi di mobile — deskripsi full ada di form edit */}
-                {menu.deskripsi && (
-                  <p className="mt-0.5 text-xs text-stone-400 italic sm:hidden">
-                    Deskripsi tersedia — ketuk untuk lihat/edit
-                  </p>
-                )}
+                  {menu.deskripsi && (
+                    <p className="mt-0.5 hidden truncate text-xs text-stone-500 sm:block">
+                      {menu.deskripsi}
+                    </p>
+                  )}
+                  {/* Hint deskripsi di mobile — deskripsi full ada di form edit */}
+                  {menu.deskripsi && (
+                    <p className="mt-0.5 text-xs text-stone-400 italic sm:hidden">
+                      Deskripsi tersedia — ketuk untuk lihat/edit
+                    </p>
+                  )}
+                </div>
+
+                {/* Toggle Ready — tetap di kanan info di semua ukuran */}
+                <button
+                  onClick={() => handleToggle(menu)}
+                  disabled={busyId === menu.id || isPending}
+                  title={menu.is_ready ? "Klik untuk tandai habis" : "Klik untuk tandai ready"}
+                  className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 disabled:cursor-wait ${
+                    menu.is_ready ? "bg-emerald-500" : "bg-stone-300"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-300 ${
+                      menu.is_ready ? "translate-x-6.5" : "translate-x-1"
+                    }`}
+                  />
+                </button>
               </div>
 
-              {/* Aksi */}
-              <div className="flex shrink-0 items-center gap-2">
-                {/* Toggle Reset Harian (menu selalu ada / ikut reset) */}
+              {/* Baris bawah (mobile saja): tombol aksi */}
+              <div className="mt-3 flex items-center gap-2 border-t border-stone-100 pt-3 sm:hidden">
+                {/* Toggle Reset Harian */}
+                <button
+                  onClick={() => handleToggleAutoReset(menu)}
+                  disabled={busyId === menu.id || isPending}
+                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-semibold transition-all duration-200 active:scale-95 disabled:cursor-wait ${
+                    menu.auto_reset
+                      ? "bg-stone-100 text-stone-600"
+                      : "bg-sky-100 text-sky-600"
+                  }`}
+                >
+                  {menu.auto_reset ? "🔁 Reset Harian" : "📌 Selalu Ready"}
+                </button>
+                {/* Edit */}
+                <button
+                  onClick={() => {
+                    setMenuEdit(menu);
+                    setFormOpen(true);
+                  }}
+                  disabled={busyId === menu.id || isPending}
+                  className="flex items-center justify-center gap-1 rounded-lg bg-warung-emas/15 px-3 py-2 text-xs font-semibold text-warung-hijau-tua transition-all duration-200 active:scale-95 disabled:cursor-wait"
+                >
+                  ✏️ Edit
+                </button>
+                {/* Hapus */}
+                <button
+                  onClick={() => handleDelete(menu)}
+                  disabled={busyId === menu.id || isPending}
+                  className="flex items-center justify-center gap-1 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 transition-all duration-200 active:scale-95 disabled:cursor-wait"
+                >
+                  🗑️ Hapus
+                </button>
+              </div>
+
+              {/* Tombol aksi (desktop saja): ikon di kanan */}
+              <div className="hidden shrink-0 items-center gap-2 sm:flex">
+                {/* Toggle Reset Harian */}
                 <button
                   onClick={() => handleToggleAutoReset(menu)}
                   disabled={busyId === menu.id || isPending}
@@ -323,22 +377,6 @@ export default function AdminMenuManager({ menus }: { menus: Menu[] }) {
                   }`}
                 >
                   {menu.auto_reset ? "🔁" : "📌"}
-                </button>
-
-                {/* Toggle Ready */}
-                <button
-                  onClick={() => handleToggle(menu)}
-                  disabled={busyId === menu.id || isPending}
-                  title={menu.is_ready ? "Klik untuk tandai habis" : "Klik untuk tandai ready"}
-                  className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full transition-colors duration-300 disabled:cursor-wait ${
-                    menu.is_ready ? "bg-emerald-500" : "bg-stone-300"
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-300 ${
-                      menu.is_ready ? "translate-x-6.5" : "translate-x-1"
-                    }`}
-                  />
                 </button>
 
                 {/* Edit */}
