@@ -117,7 +117,7 @@ export default function MenuList({ menusAwal }: { menusAwal: Menu[] }) {
           type="search"
           value={cari}
           onChange={(e) => setCari(e.target.value)}
-          placeholder="Cari menu... (cth: geprek, es teh)"
+          placeholder="Cari menu..."
           className="w-full rounded-2xl border border-stone-200 bg-white px-11 py-3 text-sm shadow-sm outline-none transition-all duration-300 placeholder:text-stone-400 focus:border-warung-emas focus:ring-2 focus:ring-warung-emas/30"
         />
         {cari && (
